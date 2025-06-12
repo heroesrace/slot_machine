@@ -1885,10 +1885,10 @@ const finalTop = -400;
                     <span class="win-amount" id="final-win-amount">$0</span>
                 </div>
                 
-                <div class="profit-display">
+                <!-- <div class="profit-display">
                     <span class="profit-label">Profit:</span>
                     <span class="profit-amount" id="final-profit-amount">$0</span>
-                </div>
+                </div> -->
             </div>
             
             <div class="results-actions">
@@ -2106,14 +2106,8 @@ const finalTop = -400;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
 }
 
-.profit-display {
-    margin-bottom: 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding-top: 10px;
-}
 
 .win-label, .profit-label {
     font-size: 16px;
@@ -2131,23 +2125,6 @@ const finalTop = -400;
     background-clip: text;
 }
 
-.profit-amount {
-    font-family: 'Orbitron', monospace;
-    font-size: 20px;
-    font-weight: 700;
-}
-
-.profit-amount.positive {
-    color: #4ecdc4;
-}
-
-.profit-amount.negative {
-    color: #ff6b6b;
-}
-
-.profit-amount.neutral {
-    color: #ffd93d;
-}
 
 .results-actions {
     display: flex;
@@ -2259,19 +2236,6 @@ function showGameResults(totalWon) {
     document.getElementById('final-bet-amount').textContent = currentAmount.toLocaleString();
     document.getElementById('final-win-amount').textContent = '$' + totalWon.toLocaleString();
     
-    // Рассчитываем прибыль
-    const profit = totalWon - currentAmount;
-    const profitEl = document.getElementById('final-profit-amount');
-    profitEl.textContent = (profit >= 0 ? '+' : '') + '$' + profit.toLocaleString();
-    
-    if (profit > 0) {
-        profitEl.className = 'profit-amount positive';
-    } else if (profit < 0) {
-        profitEl.className = 'profit-amount negative';
-    } else {
-        profitEl.className = 'profit-amount neutral';
-    }
-    
     // Заполняем результаты спинов
     const spinsGrid = document.getElementById('spins-grid');
     spinsGrid.innerHTML = '';
@@ -2281,7 +2245,7 @@ function showGameResults(totalWon) {
         spinItem.className = 'spin-item';
         
         let winClass = 'no-win';
-        let winText = 'Нет';
+        let winText = 'No';
         
         if (win > 0) {
             winClass = win >= 1000 ? 'big-win' : 'has-win';
