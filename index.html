@@ -1237,39 +1237,39 @@
             <h4 class="prize-table-title">Prize Table</h4>
             <div class="rules-grid">
                 <div class="rule-item">
-                    <span class="rule-range">$1,000 - $2,500</span>
+                    <span class="rule-range">$1,000 - $2,499</span>
                     <span class="rule-prize">$50 · $100 · $125</span>
                 </div>
                 <div class="rule-item">
-                    <span class="rule-range">$2,501 - $4,000</span>
+                    <span class="rule-range">$2,500 - $3,999</span>
                     <span class="rule-prize">$150 · $175 · $200</span>
                 </div>
                 <div class="rule-item">
-                    <span class="rule-range">$4,001 - $6,000</span>
+                    <span class="rule-range">$4,000 - $5,999</span>
                     <span class="rule-prize">$225 · $250 · $300</span>
                 </div>
                 <div class="rule-item">
-                    <span class="rule-range">$6,001 - $8,000</span>
+                    <span class="rule-range">$6,000 - $7,999</span>
                     <span class="rule-prize">$325 · $350 · $400</span>
                 </div>
                 <div class="rule-item">
-                    <span class="rule-range">$8,001 - $12,000</span>
+                    <span class="rule-range">$8,000 - $11,999</span>
                     <span class="rule-prize">$450 · $550 · $600 · 🎁</span>
                 </div>
                 <div class="rule-item">
-                    <span class="rule-range">$12,001 - $17,500</span>
+                    <span class="rule-range">$12,000 - $17,499</span>
                     <span class="rule-prize">$650 · $750 · $850 · 🎁</span>
                 </div>
                 <div class="rule-item">
-                    <span class="rule-range">$17,501 - $25,000</span>
+                    <span class="rule-range">$17,500 - $24,999</span>
                     <span class="rule-prize">$900 · $1,100 · $1,200 · 🎁</span>
                 </div>
                 <div class="rule-item">
-                    <span class="rule-range">$25,001 - $100,000</span>
+                    <span class="rule-range">$25,000 - $99,999</span>
                     <span class="rule-prize">$1,500 · 💎</span>
                 </div>
                 <div class="rule-item special-rule">
-                    <span class="rule-range">$100,001+</span>
+                    <span class="rule-range">$100,000+</span>
                     <span class="rule-prize">MEGA ⭐ 💥</span>
                 </div>
             </div>
@@ -1401,22 +1401,22 @@
         ];
 
         const prizeRules = [
-            { min: 1000, max: 2500, prizes: [50, 100, 125] },
-            { min: 2501, max: 4000, prizes: [150, 175, 200] },
-            { min: 4001, max: 6000, prizes: [225, 250, 300] },
-            { min: 6001, max: 8000, prizes: [325, 350, 400] },
-            { min: 8001, max: 12000, prizes: [450, 550, 600] },
-            { min: 12001, max: 17500, prizes: [650, 750, 850] },
-            { min: 17501, max: 25000, prizes: [900, 1100, 1200] },
-            { min: 25001, max: 100000, prizes: [1500] },
-            { min: 100001, max: Infinity, prizes: [2000, 2500, 3000, 5000] }
+            { min: 1000, max: 2499, prizes: [50, 100, 125] },
+            { min: 2500, max: 3999, prizes: [150, 175, 200] },
+            { min: 4000, max: 5999, prizes: [225, 250, 300] },
+            { min: 6000, max: 7999, prizes: [325, 350, 400] },
+            { min: 8000, max: 11999, prizes: [450, 550, 600] },
+            { min: 12000, max: 17499, prizes: [650, 750, 850] },
+            { min: 17500, max: 24999, prizes: [900, 1100, 1200] },
+            { min: 25000, max: 99999, prizes: [1500] },
+            { min: 100000, max: Infinity, prizes: [2000, 2500, 3000, 5000] }
         ];
 
         // Game state
         let currentAgent = null;
         let currentAmount = 0;
         let targetPrize = 0;
-        let spinsRemaining = 5;
+        let spinsRemaining = 3;
         let spinResults = [];
         let isSpinning = false;
         let agentsHistory = [];
@@ -1596,13 +1596,13 @@ reel.style.top = '-400px';            });
             
             currentAgent = name;
             currentAmount = amount;
-            spinsRemaining = 5;
+            spinsRemaining = 3;
             currentSpinWins = [];
             currentSpinIndex = 0;
             
             const rule = prizeRules.find(r => amount >= r.min && amount <= r.max);
             targetPrize = rule.prizes[Math.floor(Math.random() * rule.prizes.length)];
-            plannedWins = generateWinsDistribution(targetPrize, 5);
+            plannedWins = generateWinsDistribution(targetPrize, 3);
             
             currentAgentEl.textContent = currentAgent;
             spinCounterEl.textContent = spinsRemaining;
@@ -1730,16 +1730,9 @@ const finalTop = -400;
             localStorage.setItem('agentsHistory',JSON.stringify(agentsHistory));
 
             setTimeout(()=>{
-                spinBtn.disabled=true;
-                startGameBtn.disabled=false;
-                agentNameInput.disabled=false;
-                transactionAmountInput.disabled=false;
-                agentNameInput.value='';
-                transactionAmountInput.value='';
-                currentAgentEl.textContent='Waiting...';
-                spinCounterEl.textContent='0';
+                showGameResults(totalWon);
                 if(totalWon>=2000){createFireworks(20);triggerMegaWin(totalWon);}
-            },3000);
+            },2000);
         }
 
         function createParticles(count) {
@@ -1844,18 +1837,112 @@ const finalTop = -400;
             else if(e.key==='v'||e.key==='V'){vibrationToggle.click();}
         });
 
-        // init
-        window.addEventListener('load',()=>{
-            initializeReels();
-            createParticles(20);
-        });
+window.addEventListener('load', () => {
+  initializeReels();
+  createParticles(20);
+
+  // --- модалка и её кнопки ---
+  const overlay         = document.getElementById('game-results-overlay');
+  const closeResultsBtn = document.getElementById('close-results-btn');
+  const playAgainBtn    = document.getElementById('play-again-btn');
+  const newPlayerBtn    = document.getElementById('new-player-btn');
+
+  closeResultsBtn.addEventListener('click', closeGameResults);
+  newPlayerBtn  .addEventListener('click', closeGameResults);
+
+  playAgainBtn.addEventListener('click', () => {
+    closeGameResults();
+    setTimeout(() => startGameBtn.click(), 300);
+  });
+
+  // клик по тёмной подложке
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) closeGameResults();
+  });
+});
 
         transactionAmountInput.addEventListener('wheel',e=>e.preventDefault());
+
+        // Game Results Modal
+        // const closeResultsBtn = document.getElementById('close-results-btn');
+        // const playAgainBtn = document.getElementById('play-again-btn');
+        // const newPlayerBtn = document.getElementById('new-player-btn');
+
+        function showGameResults(totalWon) {
+        const gameResultsOverlay = document.getElementById('game-results-overlay');
+
+            document.getElementById('final-player-name').textContent = currentAgent;
+            document.getElementById('final-bet-amount').textContent = currentAmount.toLocaleString();
+            document.getElementById('final-win-amount').textContent = '$' + totalWon.toLocaleString();
+            
+            const spinsGrid = document.getElementById('spins-grid');
+            spinsGrid.innerHTML = '';
+            
+            currentSpinWins.forEach((win, index) => {
+                const spinItem = document.createElement('div');
+                spinItem.className = 'spin-item';
+                
+                let winClass = 'no-win';
+                let winText = 'No';
+                
+                if (win > 0) {
+                    winClass = win >= 1000 ? 'big-win' : 'has-win';
+                    winText = '$' + win.toLocaleString();
+                }
+                
+                spinItem.innerHTML = `
+                    <div class="spin-number">Spin ${index + 1}</div>
+                    <div class="spin-win ${winClass}">${winText}</div>
+                `;
+                
+                spinsGrid.appendChild(spinItem);
+            });
+            
+            gameResultsOverlay.classList.add('active');
+            sounds.megaWin();
+            vibrate([200, 100, 200]);
+        }
+
+        // closeResultsBtn.addEventListener('click', closeGameResults);
+        // newPlayerBtn.addEventListener('click', closeGameResults);
+
+        // playAgainBtn.addEventListener('click', () => {
+        //     closeGameResults();
+        //     setTimeout(() => {
+        //         startGameBtn.click();
+        //     }, 300);
+        // });
+
+        function closeGameResults() {
+            // gameResultsOverlay.classList.remove('active');
+             const overlay = document.getElementById('game-results-overlay');
+                overlay.classList.remove('active');
+            
+            spinBtn.disabled = true;
+            startGameBtn.disabled = false;
+            agentNameInput.disabled = false;
+            transactionAmountInput.disabled = false;
+            agentNameInput.value = '';
+            transactionAmountInput.value = '';
+            currentAgentEl.textContent = 'Waiting...';
+            spinCounterEl.textContent = '0';
+            
+            spinResultsEl.innerHTML = '';
+            totalWinEl.classList.remove('show');
+            document.querySelectorAll('.payline').forEach(p => p.classList.remove('payline-active'));
+            document.querySelectorAll('.symbol.winning').forEach(s => s.classList.remove('winning'));
+            
+            sounds.click();
+        }
+
+        // gameResultsOverlay.addEventListener('click', (e) => {
+        //     if (e.target === gameResultsOverlay) {
+        //         closeGameResults();
+        //     }
+        // });
     </script>
 
-    <!-- Добавь это в HTML перед закрывающим тегом body -->
-
-<!-- Модальное окно результатов -->
+    <!-- Модальное окно результатов -->
 <div class="game-results-overlay" id="game-results-overlay">
     <div class="game-results-modal">
         <div class="results-header">
@@ -2049,7 +2136,7 @@ const finalTop = -400;
 
 .spins-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 10px;
 }
 
@@ -2191,121 +2278,5 @@ const finalTop = -400;
     }
 }
 </style>
-
-<script>
-// Добавь эти переменные в начало JavaScript
-const gameResultsOverlay = document.getElementById('game-results-overlay');
-const closeResultsBtn = document.getElementById('close-results-btn');
-const playAgainBtn = document.getElementById('play-again-btn');
-const newPlayerBtn = document.getElementById('new-player-btn');
-
-// Замени функцию endGame() на эту:
-function endGame() {
-    const totalWon = currentSpinWins.reduce((a, b) => a + b, 0);
-    
-    // Добавляем в историю
-    agentsHistory.push({
-        name: currentAgent,
-        amount: currentAmount,
-        prize: totalWon,
-        timestamp: Date.now(),
-        isVip: currentAmount >= 50000
-    });
-    
-    totalWinnings += totalWon;
-    totalWinningsEl.textContent = totalWinnings.toLocaleString();
-    updateLeaderboard();
-    localStorage.setItem('agentsHistory', JSON.stringify(agentsHistory));
-
-    // Показываем модальное окно с результатами
-    setTimeout(() => {
-        showGameResults(totalWon);
-        
-        // Эффекты для больших выигрышей
-        if (totalWon >= 2000) {
-            createFireworks(20);
-            triggerMegaWin(totalWon);
-        }
-    }, 2000);
-}
-
-// Новая функция для показа результатов
-function showGameResults(totalWon) {
-    // Заполняем данные игрока
-    document.getElementById('final-player-name').textContent = currentAgent;
-    document.getElementById('final-bet-amount').textContent = currentAmount.toLocaleString();
-    document.getElementById('final-win-amount').textContent = '$' + totalWon.toLocaleString();
-    
-    // Заполняем результаты спинов
-    const spinsGrid = document.getElementById('spins-grid');
-    spinsGrid.innerHTML = '';
-    
-    currentSpinWins.forEach((win, index) => {
-        const spinItem = document.createElement('div');
-        spinItem.className = 'spin-item';
-        
-        let winClass = 'no-win';
-        let winText = 'No';
-        
-        if (win > 0) {
-            winClass = win >= 1000 ? 'big-win' : 'has-win';
-            winText = '$' + win.toLocaleString();
-        }
-        
-        spinItem.innerHTML = `
-            <div class="spin-number">Spin ${index + 1}</div>
-            <div class="spin-win ${winClass}">${winText}</div>
-        `;
-        
-        spinsGrid.appendChild(spinItem);
-    });
-    
-    // Показываем модальное окно
-    gameResultsOverlay.classList.add('active');
-    sounds.megaWin();
-    vibrate([200, 100, 200]);
-}
-
-// Обработчики для кнопок модального окна
-closeResultsBtn.addEventListener('click', closeGameResults);
-newPlayerBtn.addEventListener('click', closeGameResults);
-
-playAgainBtn.addEventListener('click', () => {
-    closeGameResults();
-    // Сохраняем текущие данные игрока для повторной игры
-    setTimeout(() => {
-        startGameBtn.click();
-    }, 300);
-});
-
-function closeGameResults() {
-    gameResultsOverlay.classList.remove('active');
-    
-    // Сбрасываем состояние игры
-    spinBtn.disabled = true;
-    startGameBtn.disabled = false;
-    agentNameInput.disabled = false;
-    transactionAmountInput.disabled = false;
-    agentNameInput.value = '';
-    transactionAmountInput.value = '';
-    currentAgentEl.textContent = 'Waiting...';
-    spinCounterEl.textContent = '0';
-    
-    // Очищаем результаты
-    spinResultsEl.innerHTML = '';
-    totalWinEl.classList.remove('show');
-    document.querySelectorAll('.payline').forEach(p => p.classList.remove('payline-active'));
-    document.querySelectorAll('.symbol.winning').forEach(s => s.classList.remove('winning'));
-    
-    sounds.click();
-}
-
-// Закрытие по клику вне модального окна
-gameResultsOverlay.addEventListener('click', (e) => {
-    if (e.target === gameResultsOverlay) {
-        closeGameResults();
-    }
-});
-</script>
 </body>
 </html>
